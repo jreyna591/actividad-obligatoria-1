@@ -1,17 +1,16 @@
-# Integrador Movil 1
+# Actividad Obligatoria 1 Móvil
 
-Aplicacion Android de gestion de contactos.
+Aplicación Android de gestión de contactos.
 
 ## Funcionalidades
 - Login con usuario y contraseña hardcodeados
 - Lista de contactos
-- Busqueda por nombre
-- Alta de contactos en memoria
-- Boton para llamar a cada contacto
+- Búsqueda por nombre
+- Alta de contactos en memoria (desaparecen al cerrar la aplicación)
+- Botón para llamar a cada contacto
 
 ## Credenciales
 - Usuario: admin
 - Contraseña: 1234
 
-## Nota
-Los contactos agregados solo permanecen mientras la aplicacion esta abierta.
+
