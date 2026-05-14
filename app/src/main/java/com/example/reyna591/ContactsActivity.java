@@ -18,7 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.SharedPreferences;
+
+
 public class ContactsActivity extends AppCompatActivity {
+
+    private static final String PREFERENCES_NAME = "appPreferences";
+    private static final String LOGIN_KEY = "userLoggedIn";
 
     private MaterialToolbar contactsToolbar;
     private RecyclerView contactsRecyclerView;
@@ -27,6 +33,9 @@ public class ContactsActivity extends AppCompatActivity {
     private ContactAdapter contactAdapter;
     private List<Contact> allContacts;
     private String currentQuery = "";
+
+    private DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +49,19 @@ public class ContactsActivity extends AppCompatActivity {
 
         setSupportActionBar(contactsToolbar);
 
-        allContacts = DataRepository.getContacts();
+        databaseHelper = new DatabaseHelper(this);
 
-        contactAdapter = new ContactAdapter(new ArrayList<>(allContacts));
+        allContacts = databaseHelper.getAllContacts();
+
+        contactAdapter = new ContactAdapter(new ArrayList<>(allContacts), contact -> {
+            Intent intent = new Intent(this, EditContactActivity.class);
+            intent.putExtra("contactId", contact.getId());
+            intent.putExtra("firstName", contact.getFirstName());
+            intent.putExtra("lastName", contact.getLastName());
+            intent.putExtra("phone", contact.getPhone());
+            startActivity(intent);
+        });
+
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactsRecyclerView.setAdapter(contactAdapter);
 
@@ -56,9 +75,35 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        allContacts = DataRepository.getContacts();
+        allContacts = databaseHelper.getAllContacts();
         filterContacts(currentQuery);
     }
+
+    //cierra la sesion
+    private void logoutUser() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(LOGIN_KEY, false);
+        editor.apply();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    //menu de cerrar sesion
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            logoutUser();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     //menu de busqueda
     @Override

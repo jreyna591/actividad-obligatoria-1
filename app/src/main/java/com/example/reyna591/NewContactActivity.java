@@ -19,6 +19,9 @@ public class NewContactActivity extends AppCompatActivity {
     private TextInputEditText phoneField;
     private Button saveContactButton;
 
+    private DatabaseHelper databaseHelper;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,8 @@ public class NewContactActivity extends AppCompatActivity {
         lastNameField = findViewById(R.id.lastNameField);
         phoneField = findViewById(R.id.phoneField);
         saveContactButton = findViewById(R.id.saveContactButton);
+
+        databaseHelper = new DatabaseHelper(this);
 
         setSupportActionBar(newContactToolbar);
 
@@ -51,7 +56,7 @@ public class NewContactActivity extends AppCompatActivity {
         String avatar = firstName.substring(0, 1).toUpperCase() + lastName.substring(0, 1).toUpperCase();
 
         Contact newContact = new Contact(firstName, lastName, phone, avatar);
-        DataRepository.addContact(newContact);
+        databaseHelper.addContact(newContact);
 
         Toast.makeText(this, "Contacto guardado", Toast.LENGTH_SHORT).show();
         finish();

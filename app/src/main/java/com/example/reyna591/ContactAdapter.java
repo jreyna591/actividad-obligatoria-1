@@ -17,9 +17,19 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     private List<Contact> contacts;
 
-    public ContactAdapter(List<Contact> contacts) {
-        this.contacts = contacts;
+    public interface OnContactClickListener {
+        void onContactClick(Contact contact);
     }
+
+    private OnContactClickListener onContactClickListener;
+
+
+
+    public ContactAdapter(List<Contact> contacts, OnContactClickListener onContactClickListener) {
+        this.contacts = contacts;
+        this.onContactClickListener = onContactClickListener;
+    }
+
 
     //actualiza la lista de contactos
     public void updateList(List<Contact> newContacts) {
@@ -42,6 +52,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.fullNameTextView.setText(contact.getFullName());
         holder.phoneTextView.setText(contact.getPhone());
         holder.callButton.setOnClickListener(v -> openDialer(contact.getPhone(), v));
+        holder.itemView.setOnClickListener(v -> onContactClickListener.onContactClick(contact));
+
     }
 
     @Override

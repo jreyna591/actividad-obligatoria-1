@@ -11,7 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import android.content.SharedPreferences;
+
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String PREFERENCES_NAME = "appPreferences";
+    private static final String LOGIN_KEY = "userLoggedIn";
 
     private TextInputEditText usernameField;
     private TextInputEditText passwordField;
@@ -23,12 +29,36 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        checkSavedLogin();
+
         usernameField = findViewById(R.id.usernameField);
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(v -> validateLogin());
     }
+
+    //verifica si el usuario ya inicio sesion
+    private void checkSavedLogin() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        boolean userLoggedIn = preferences.getBoolean(LOGIN_KEY, false);
+
+        if (userLoggedIn) {
+            Intent intent = new Intent(this, ContactsActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    //guarda el estado de la sesion
+    private void saveLoginState() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(LOGIN_KEY, true);
+        editor.apply();
+    }
+
+
 
     //verifica el usuario y password
     private void validateLogin() {
@@ -43,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
         //verifica si el usuario y password son correctos
         if (DataRepository.validateLogin(username, password)) {
+            saveLoginState();
             Intent intent = new Intent(this, ContactsActivity.class);
             startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Usuario y/o password incorrectos", Toast.LENGTH_SHORT).show();
         }
