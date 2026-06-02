@@ -59,6 +59,8 @@ public class ContactsActivity extends AppCompatActivity {
             intent.putExtra("firstName", contact.getFirstName());
             intent.putExtra("lastName", contact.getLastName());
             intent.putExtra("phone", contact.getPhone());
+            intent.putExtra("address", contact.getAddress());
+            intent.putExtra("gender", contact.getGender());
             startActivity(intent);
         });
 

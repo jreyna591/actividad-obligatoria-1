@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "contactsApp.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_CONTACTS = "contacts";
 
@@ -20,6 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_FIRST_NAME = "first_name";
     private static final String COLUMN_LAST_NAME = "last_name";
     private static final String COLUMN_PHONE = "phone";
+    private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_GENDER = "gender";
     private static final String COLUMN_AVATAR_TEXT = "avatar_text";
 
     public DatabaseHelper(Context context) {
@@ -33,6 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_FIRST_NAME + " TEXT, "
                 + COLUMN_LAST_NAME + " TEXT, "
                 + COLUMN_PHONE + " TEXT, "
+                + COLUMN_ADDRESS + " TEXT, "
+                + COLUMN_GENDER + " TEXT, "
                 + COLUMN_AVATAR_TEXT + " TEXT)";
 
         database.execSQL(createTableQuery);
@@ -47,12 +51,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void insertStartingContacts(SQLiteDatabase database) {
-        insertContact(database, new Contact("Belen", "Garcia", "2234567890", "AG"));
-        insertContact(database, new Contact("Bruno", "Lopez", "2234551111", "BL"));
-        insertContact(database, new Contact("Carla", "Martinez", "2234778899", "CM"));
-        insertContact(database, new Contact("Diego", "Fernandez", "2234001122", "DF"));
-        insertContact(database, new Contact("Elena", "Suarez", "2234998877", "ES"));
-        insertContact(database, new Contact("Facundo", "Perez", "2234123456", "FP"));
+        insertContact(database, new Contact("Belen", "Garcia", "2234567890", "Calle 1", "Femenino", "BG"));
+        insertContact(database, new Contact("Bruno", "Lopez", "2234551111", "Calle 2", "Masculino", "BL"));
+        insertContact(database, new Contact("Carla", "Martinez", "2234778899", "Calle 3", "Femenino", "CM"));
+        insertContact(database, new Contact("Diego", "Fernandez", "2234001122", "Calle 4", "Masculino", "DF"));
+        insertContact(database, new Contact("Elena", "Suarez", "2234998877", "Calle 5", "Femenino", "ES"));
+        insertContact(database, new Contact("Facundo", "Perez", "2234123456", "Calle 6", "Masculino", "FP"));
     }
 
     private void insertContact(SQLiteDatabase database, Contact contact) {
@@ -60,6 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_FIRST_NAME, contact.getFirstName());
         values.put(COLUMN_LAST_NAME, contact.getLastName());
         values.put(COLUMN_PHONE, contact.getPhone());
+        values.put(COLUMN_ADDRESS, contact.getAddress());
+        values.put(COLUMN_GENDER, contact.getGender());
         values.put(COLUMN_AVATAR_TEXT, contact.getAvatarText());
 
         database.insert(TABLE_CONTACTS, null, values);
@@ -83,9 +89,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String firstName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FIRST_NAME));
                 String lastName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LAST_NAME));
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ADDRESS));
+                String gender = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GENDER));
                 String avatarText = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AVATAR_TEXT));
 
-                Contact contact = new Contact(id, firstName, lastName, phone, avatarText);
+                Contact contact = new Contact(id, firstName, lastName, phone, address, gender, avatarText);
                 contactList.add(contact);
 
             } while (cursor.moveToNext());
@@ -104,6 +112,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_FIRST_NAME, contact.getFirstName());
         values.put(COLUMN_LAST_NAME, contact.getLastName());
         values.put(COLUMN_PHONE, contact.getPhone());
+        values.put(COLUMN_ADDRESS, contact.getAddress());
+        values.put(COLUMN_GENDER, contact.getGender());
         values.put(COLUMN_AVATAR_TEXT, contact.getAvatarText());
 
         database.update(

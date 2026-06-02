@@ -13,12 +13,12 @@ public class DataRepository {
 
     //lista de contactos hardcodeada
     static {
-        contacts.add(new Contact("Juan", "Perez", "3515555695", "JP"));
-        contacts.add(new Contact("Bruno", "Lopez", "3513589627", "BL"));
-        contacts.add(new Contact("Maria", "Martinez", "3515512986", "MM"));
-        contacts.add(new Contact("Diego", "Suarez", "3515327198", "DS"));
-        contacts.add(new Contact("Elena", "Fernandez", "3513891764", "EF"));
-        contacts.add(new Contact("Facundo", "Gonzalez", "3515988559", "FG"));
+        contacts.add(new Contact("Juan", "Perez", "3515555695", "Calle 10", "Masculino", "JP"));
+        contacts.add(new Contact("Bruno", "Lopez", "3513589627", "Calle 11", "Masculino", "BL"));
+        contacts.add(new Contact("Maria", "Martinez", "3515512986", "Calle 12", "Femenino", "MM"));
+        contacts.add(new Contact("Diego", "Suarez", "3515327198", "Calle 13", "Masculino", "DS"));
+        contacts.add(new Contact("Elena", "Fernandez", "3513891764", "Calle 14", "Femenino", "EF"));
+        contacts.add(new Contact("Facundo", "Gonzalez", "3515988559", "Calle 15", "Masculino", "FG"));
     }
 
     public static boolean validateLogin(String username, String password) {
